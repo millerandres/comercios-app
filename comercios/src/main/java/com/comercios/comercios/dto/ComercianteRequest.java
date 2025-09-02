@@ -1,24 +1,15 @@
-package com.comercios.comercios.entity;
-import jakarta.persistence.*;
+package com.comercios.comercios.dto;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-@Entity
-@Table(name = "COMERCIANTE", schema = "MILLERCARO")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Comerciante {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ComercianteRequest {
 
     @NotBlank
     private String nombre;
@@ -36,10 +27,6 @@ public class Comerciante {
 
     @NotBlank
     private String estado;
-
-    private LocalDateTime fechaActualizacion;
-
-    private String usuarioActualizacion;
 
     // Getters y Setters
 }
