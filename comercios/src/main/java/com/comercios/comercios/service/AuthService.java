@@ -5,15 +5,20 @@ import com.comercios.comercios.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    private final UsuarioService usuarioService;
+
+    public AuthService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, UsuarioService usuarioService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.usuarioService = usuarioService;
     }
 
     public Usuario login(String correo, String contrasena) {
@@ -26,5 +31,19 @@ public class AuthService {
         }
 
         return usuario;
+    }
+
+    public Optional<Usuario> validarCredenciales(String correo, String contrasena) {
+        Optional<Usuario> usuarioOpt = usuarioService.obtenerPorCorreo(correo);
+
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+
+            if (usuario.getContrasena().equals(contrasena)) {
+                return usuarioOpt;  // credenciales válidas
+            }
+        }
+
+        return Optional.empty();  // credenciales inválidas
     }
 }
